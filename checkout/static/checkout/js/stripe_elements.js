@@ -10,7 +10,7 @@ let clientSecret = $("#id_client_secret").text().slice(1, -1);
 let stripe = Stripe(stripePublicKey);
 let elements = stripe.elements();
 
-var style = {
+let style = {
   base: {
     color: "#000",
     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
@@ -18,15 +18,15 @@ var style = {
     fontSize: "16px",
     "::placeholder": {
       color: "#aab7c4",
-    }
+    },
   },
   invalid: {
     color: "#dc3545",
-    iconColor: "#dc3545"
-  }
+    iconColor: "#dc3545",
+  },
 };
 
-let card = elements.create("card", {style: style});
+let card = elements.create("card", { style: style });
 card.mount("#card-element");
 
 // Handle realtime validation errors on the card element
@@ -41,36 +41,36 @@ card.addEventListener("change", function (event) {
         `;
     $(errorDiv).html(html);
   } else {
-    errorDiv.textContent = "";
+        errorDiv.textContent = "";
   }
 });
 
 // Handle form submit
-var form = document.getElementById('payment-form');
+let form = document.getElementById("payment-form");
 
-form.addEventListener('submit', function(ev) {
-  ev.preventDefault();
-  card.update({"disabled": true});
-  $("#submit-button").attr("disabled", true);
-  stripe.confirmCardPayment(clientSecret, {
-    payment_method: {
-      card: card,
-      }
-  }).then(function(result) {
-      if (result.error) {
-          let errorDiv = document.getElementById("card-errors");
-          let html = `
-            <span class="icon" role="alert">
-                <i class="fas fa-times"></i>
-            </span>
-            <span>${result.error.message}</span>`;
+form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    card.update({ "disabled": true });
+    $("#submit-button").attr("disabled", true);
+    stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+            card: card,
+        },
+    }).then(function (result) {
+        if (result.error) {
+            let errorDiv = document.getElementById("card-errors");
+            let html = 
+                `<span class="icon" role="alert">
+                    <i class="fas fa-times"></i>
+                </span>
+                <span>${result.error.message}</span>`;
             $(errorDiv).html(html);
-            card.update({"disabled": false});
+            card.update({ "disabled": false });
             $("#submit-button").attr("disabled", false);
-    } else {
-      if (result.paymentIntent.status === 'succeeded') {
-          form.sumbit();
-      }
-    }
-  });
+        } else {
+            if (result.paymentIntent.status === "succeeded") {
+                form.submit();
+            }
+        }
+    });
 });
