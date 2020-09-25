@@ -23,7 +23,7 @@ let style = {
   invalid: {
     color: "#dc3545",
     iconColor: "#dc3545",
-  },
+  }
 };
 
 let card = elements.create("card", { style: style });
