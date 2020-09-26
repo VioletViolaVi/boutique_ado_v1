@@ -3,6 +3,11 @@
 } */
 /* ...OR... */
 
+.order-history{
+    max-height: 416px; /* height of profile form and submit form */
+    overflow-y: auto;
+}
+
 #profile-update-form .form-control {
   color: #000;
 }
